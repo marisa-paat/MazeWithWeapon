@@ -7,6 +7,7 @@
 
 #include "Enemy.h"
 #include "Key.h"
+#include "Weapon.h"
 #include "Door.h"
 #include "Money.h"
 #include "Goal.h"
@@ -102,6 +103,7 @@ bool GameplayState::Update(bool processInput)
 		else if ((char)input == 'Z' || (char)input == 'z')
 		{
 			m_player.DropKey();
+			m_player.DropWeapon();
 		}
 
 		// If position never changed
@@ -156,8 +158,15 @@ void GameplayState::HandleCollision(int newPlayerX, int newPlayerY)
 			AudioManager::GetInstance()->PlayLoseLivesSound();
 			collidedEnemy->Remove();
 			m_player.SetPosition(newPlayerX, newPlayerY);
-
-			m_player.DecrementLives();
+			
+			if (m_player.HasWeapon)
+			{
+				m_player.UseWeapon();
+			}
+			else
+			{
+				m_player.DecrementLives();
+			}
 			if (m_player.GetLives() < 0)
 			{
 				//TODO: Go to game over screen
@@ -186,6 +195,19 @@ void GameplayState::HandleCollision(int newPlayerX, int newPlayerY)
 				collidedKey->Remove();
 				m_player.SetPosition(newPlayerX, newPlayerY);
 				AudioManager::GetInstance()->PlayKeyPickupSound();
+			}
+			break;
+		}
+		case ActorType::Weapon:
+		{
+			Weapon* collidedWeapon = dynamic_cast<Weapon*>(collidedActor);
+			assert(collidedWeapon);
+			if (!m_player.HasWeapon())
+			{
+				m_player.PickupWeapon(collidedWeapon);
+				collidedWeapon->Remove();
+				m_player.SetPosition(newPlayerX, newPlayerY);
+				AudioManager::GetInstance()->PlayWeaponPickupSound();
 			}
 			break;
 		}
@@ -282,6 +304,15 @@ void GameplayState::DrawHUD(const HANDLE& console)
 	if (m_player.HasKey())
 	{
 		m_player.GetKey()->Draw();
+	}
+	else
+	{
+		cout << " ";
+	}
+	cout << " weapon:";
+	if (m_player.HasWeapon())
+	{
+		m_player.GetWeapon()->Draw();
 	}
 	else
 	{

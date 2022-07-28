@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Key.h"
+#include "Weapon.h"
 #include "Door.h"
 #include "Goal.h"
 #include "Money.h"
@@ -138,6 +139,10 @@ bool Level::ConvertLevel(int* playerX, int* playerY)
 			case 'b':
 				m_pLevelData[index] = ' ';
 				m_pActors.push_back(new Key(x, y, ActorColor::Blue));
+				break;
+			case '1':
+				m_pLevelData[index] = ' ';
+				m_pActors.push_back(new Weapon(x, y, ActorColor::Red));
 				break;
 			case 'R':
 				m_pLevelData[index] = ' ';

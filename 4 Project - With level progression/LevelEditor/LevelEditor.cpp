@@ -144,6 +144,7 @@ void DisplayLegend()
 	cout << "+ | - for walls" << endl;
 	cout << "@ for player start" << endl;
 	cout << "r g b for key" << endl;
+	cout << "1 for weapon" << endl;
 	cout << "R G B for door" << endl;
 	cout << "$ for money" << endl;
 	cout << "v for vertical moving enemy" << endl;

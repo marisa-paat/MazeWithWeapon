@@ -62,7 +62,23 @@ public:
 		Beep(1568, 200);
 	}
 
+	void PlayWeaponPickupSound()
+	{
+		if (!m_SoundOn)
+			return;
+		Beep(1568, 50);
+		Beep(1568, 200);
+	}
+
 	void PlayKeyDropSound()
+	{
+		if (!m_SoundOn)
+			return;
+		Beep(1568, 200);
+		Beep(1568, 50);
+	}
+
+	void PlayWeaponDropSound()
 	{
 		if (!m_SoundOn)
 			return;
